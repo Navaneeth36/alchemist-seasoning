@@ -36,7 +36,7 @@ const total = () => Object.entries(cart).reduce((a,[k,q])=>a+BY_SKU[k].price*q,0
 function addToCart(sku, q){
   cart[sku] = Math.min(999,(cart[sku]||0)+q); save(); renderCart();
   document.querySelectorAll("[data-count]").forEach(b=>{b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump")});
-  toast(`Added ${q} × ${BY_SKU[sku].name} (${BY_SKU[sku].size})`);
+  toast(`✓ Added ${q} × ${short(BY_SKU[sku].name)} ${BY_SKU[sku].size}`);
 }
 function setQty(sku,q){ if(q<=0) delete cart[sku]; else cart[sku]=Math.min(999,q); save(); renderCart(); }
 
@@ -91,7 +91,7 @@ cartBody.addEventListener("click",e=>{
 cartBody.addEventListener("change",e=>{ if(e.target.matches("input")){const sku=e.target.closest(".qty").dataset.sku; setQty(sku,clampQty(e.target.value))} });
 
 const drawer=document.getElementById("drawer"), scrim=document.getElementById("scrim");
-function openCart(){drawer.classList.add("open");scrim.classList.add("open");drawer.setAttribute("aria-hidden","false");document.getElementById("fab").classList.remove("show");closeMenu();document.getElementById("closeCart").focus()}
+function openCart(){document.getElementById("toast").classList.remove("show");drawer.classList.add("open");scrim.classList.add("open");drawer.setAttribute("aria-hidden","false");document.getElementById("fab").classList.remove("show");closeMenu();document.getElementById("closeCart").focus()}
 function closeCart(){drawer.classList.remove("open");scrim.classList.remove("open");drawer.setAttribute("aria-hidden","true");renderCart()}
 document.querySelectorAll("[data-open-cart]").forEach(b=>b.addEventListener("click",openCart));
 document.getElementById("closeCart").addEventListener("click",closeCart);
@@ -155,12 +155,13 @@ document.querySelectorAll(".chip").forEach(ch => ch.addEventListener("click", ()
 const words = ["Peri Peri","Nashville Hot","Tandoori Mayo","Smoky BBQ","Buffalo","Garlic Mayo","Spicy Burger"];
 document.getElementById("ribbon").innerHTML = [...words,...words,...words].map(w=>`<span>${w}</span>`).join("");
 const hero = document.querySelector(".hero");
+const SPICE_N = innerWidth < 600 ? 9 : 20;
 const spiceCols = ["#E8222E","#B91C1C","#FF7A00","#D9480F","#FFFFFF","#9D0208"];
 const spices = [];
-for(let i=0;i<20;i++){
+for(let i=0;i<SPICE_N;i++){
   const s=document.createElement("span"); s.className="spice";
   const d=6+Math.random()*18; s.style.width=s.style.height=d+"px";
-  s.style.left=Math.random()*100+"%"; s.style.top=Math.random()*100+"%";
+  s.style.left=Math.random()*100+"%"; s.style.top=(SPICE_N<20 ? 74+Math.random()*24 : Math.random()*100)+"%";
   s.style.background=spiceCols[i%spiceCols.length]; s.style.opacity=.45+Math.random()*.4;
   hero.appendChild(s); spices.push({el:s,speed:.15+Math.random()*.5});
 }
