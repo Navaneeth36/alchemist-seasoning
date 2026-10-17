@@ -153,7 +153,7 @@ document.querySelectorAll(".chip").forEach(ch => ch.addEventListener("click", ()
 
 /* ---------- ribbon + hero spice dots ---------- */
 const words = ["Peri Peri","Nashville Hot","Tandoori Mayo","Smoky BBQ","Buffalo","Garlic Mayo","Spicy Burger"];
-document.getElementById("ribbon").innerHTML = [...words,...words,...words].map(w=>`<span>${w}</span>`).join("");
+document.getElementById("ribbon").innerHTML = [...words,...words].map(w=>`<span>${w}</span>`).join("");
 const hero = document.querySelector(".hero");
 const SPICE_N = innerWidth < 600 ? 9 : 20;
 const spiceCols = ["#E8222E","#B91C1C","#FF7A00","#D9480F","#FFFFFF","#9D0208"];
@@ -207,7 +207,6 @@ function onScroll(){
   head.classList.toggle("scrolled",y>10);
   if(!reduce){
     spices.forEach(s=>s.el.style.transform=`translateY(${y*s.speed}px)`);
-    ribbon.style.transform=`translateX(${-(y*0.4)%900}px)`;
   }
   ticking=false;
 }

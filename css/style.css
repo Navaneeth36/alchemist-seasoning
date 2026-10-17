@@ -129,8 +129,12 @@ header.scrolled .nav{padding-block:8px}
 
 /* ribbon */
 .ribbon{background:linear-gradient(90deg,var(--mirchi),var(--rani),var(--kesar));color:#fff;overflow:hidden;padding-block:14px}
-.ribbon-track{display:flex;gap:36px;white-space:nowrap;font-family:var(--display);font-size:1.6rem;will-change:transform}
+.ribbon-track{display:flex;width:max-content;white-space:nowrap;font-family:var(--display);font-size:1.6rem;will-change:transform;animation:marquee 32s linear infinite}
+.ribbon:hover .ribbon-track{animation-play-state:paused}
+.ribbon-track span{padding-right:36px}
 .ribbon-track span::after{content:"✦";margin-left:36px;color:var(--haldi)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (max-width:480px){.ribbon-track{animation-duration:70s}.ribbon-track span{padding-right:24px}.ribbon-track span::after{margin-left:24px}}
 
 /* sections */
 section.band{color:var(--ink);background:
@@ -279,6 +283,8 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .pre{opacity:1;transform:none}.reveal-in{animation:none}
-  .spice,.ribbon-track{transform:none!important}
+  .spice{transform:none!important}
+  .ribbon-track{animation:none}
+  .ribbon{overflow-x:auto}
   .drawer,.fab,.scrim{transition:none}
 }
