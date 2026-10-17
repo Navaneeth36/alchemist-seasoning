@@ -17,7 +17,13 @@ const PRODUCTS = FLAVOURS.flatMap(f => [
 const BY_SKU = Object.fromEntries(PRODUCTS.map(p=>[p.sku,p]));
 const rs = n => "₹" + n.toLocaleString("en-IN");
 const short = n => n.replace(/ Sauce Premix| Premix| Sauce$/,"").replace("Mayonnaise","Mayo");
-const heatDots = h => [1,2,3,4].map(i=>`<i class="${i<=h?"on":""}"></i>`).join("");
+const CHILLI = `<path d="M13.4 7.6c2.7.1 4.5 2.2 4.2 5.1-.5 4.7-5.4 8.5-12.6 8.3 3.7-2.4 5.3-5.3 5.7-8.6.3-2.6.7-4.8 2.7-4.8z" fill="currentColor"/><path d="M11.6 8.4c1.1-1 2.8-1.2 4.1-.4M13.6 7.6c-.2-2 .6-3.6 2.5-4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>`;
+const GARLIC = `<path d="M12 2.6c.6 1.6 1 2.6 2.8 4 3.4 2.4 4.6 4.8 4.6 7.3 0 3.8-3.3 6.6-7.4 6.6s-7.4-2.8-7.4-6.6c0-2.5 1.2-4.9 4.6-7.3 1.8-1.4 2.2-2.4 2.8-4z" fill="#FFF7EA" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 8.8v11.6M9 10.6c-1.2 2.7-1.1 6 .5 9.4M15 10.6c1.2 2.7 1.1 6-.5 9.4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity=".55"/><path d="M10.3 20.7l-.7 1.4M12 20.9v1.5M13.7 20.7l.7 1.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>`;
+const svgIcon = (body, cls="") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${body}</svg>`;
+const heatIcons = f => f.id==="garlic"
+  ? svgIcon(GARLIC,"garlic")
+  : [1,2,3,4].map(i=>svgIcon(CHILLI, i<=f.heat?"":"off")).join("");
+const heatLabel = f => f.id==="garlic" ? "Garlicky, no heat" : ["Mild","Gentle","Medium","Hot","Very hot"][f.heat];
 const pack = p => p.img
   ? `<img src="${p.img}" alt="${p.name} ${p.size} pack" loading="lazy">`
   : `<div class="pack ${p.size==="1 kg"?"tub":"pouch"}" style="--c:${p.c};--t:${p.t||'#fff'}" aria-hidden="true"><div class="lbl"><b>${short(p.name)}</b><i>${p.kind}</i></div><span class="wt">${p.size}</span></div>`;
@@ -104,7 +110,7 @@ let tt; function toast(msg){const t=document.getElementById("toast");t.textConte
 document.getElementById("flavours").innerHTML = FLAVOURS.map(f => `
   <article class="flav" style="--c:${f.c};--t:${f.t||'#fff'}">
     <h3>${f.name}</h3>
-    <div class="heat" aria-label="Heat ${f.heat} of 4">${heatDots(f.heat)}<span style="margin-left:6px">${["Mild","Gentle","Medium","Hot","Very hot"][f.heat]}</span></div>
+    <div class="heat" aria-label="${heatLabel(f)}">${heatIcons(f)}<span class="heat-lbl">${heatLabel(f)}</span></div>
     <p>${f.desc}</p>
     <span class="from price">100 g ${rs(f.p100)} · 1 kg ${rs(f.p1kg)}</span>
   </article>`).join("");
@@ -116,7 +122,7 @@ function renderProducts(filter){
     <article class="prod" style="--c:${p.c};--t:${p.t||'#fff'}" data-sku="${p.sku}">
       <div class="stage">${pack(p)}</div>
       <div class="info">
-        <div class="tagrow"><span class="size ${p.size==="1 kg"?"kg":""}">${p.size}</span><span class="heat" aria-label="Heat ${p.heat} of 4">${heatDots(p.heat)}</span></div>
+        <div class="tagrow"><span class="size ${p.size==="1 kg"?"kg":""}">${p.size}</span><span class="heat ${p.id==="garlic"?"is-garlic":""}" aria-label="${heatLabel(p)}" title="${heatLabel(p)}">${heatIcons(p)}</span></div>
         <h3>${p.name}</h3>
         <p>${p.desc}</p>
         <span class="price">${rs(p.price)}<small>per ${p.size} pack</small></span>

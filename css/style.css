@@ -169,11 +169,14 @@ section.band.sunny .eyebrow{color:var(--mirchi)}
 .flav h3{font-size:1.5rem}
 .flav p{opacity:.95}
 .flav .from{margin-top:auto;font-weight:700;background:#fff;color:var(--ink);align-self:flex-start;padding:4px 12px;border-radius:999px;font-size:.9rem}
-.heat{display:flex;gap:4px;align-items:center;font-size:.78rem;font-weight:700}
-.heat i{width:10px;height:10px;border-radius:50%;background:currentColor;opacity:.3}
-.heat i.on{opacity:1}
-.prod .heat i{background:#F7DCC8;opacity:1}
-.prod .heat i.on{background:var(--mirchi)}
+.heat{display:flex;gap:2px;align-items:center;font-size:.78rem;font-weight:700}
+.heat svg{width:18px;height:18px;flex:none}
+.heat svg.off{opacity:.28}
+.heat .garlic{width:24px;height:24px}
+.heat .heat-lbl{margin-left:6px}
+.prod .heat{color:var(--mirchi)}
+.prod .heat svg.off{opacity:.2}
+.prod .heat.is-garlic{color:#B8862F}
 
 /* products */
 .filters{display:flex;gap:8px;flex-wrap:wrap}
